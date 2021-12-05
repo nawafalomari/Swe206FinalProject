@@ -38,7 +38,7 @@ public class FileReader {
         int sheetNumber = 0;
         while(ii.hasNext()){
             XSSFSheet sheet = (XSSFSheet) ii.next();
-            boolean team = sheet.getRow(4).getPhysicalNumberOfCells() == 7;
+            boolean team = sheet.getRow(4).getPhysicalNumberOfCells() == 7; //this line will check if it's team or not.
             if (team){
                 System.out.println("They are a team\n\n\n");
             }else {
@@ -51,7 +51,7 @@ public class FileReader {
             String compDate =  itr.next().getCell(1).getNumericCellValue()+" ";
             compList.add(new Competition(compName, compDate, compUrl, !team));
             itr.next();
-
+            double laseTeamAdded = 0;
             while (itr.hasNext())
             {
                 Row row = itr.next();
@@ -69,6 +69,29 @@ public class FileReader {
                             pId,
                             pMajor
                     ), rank));
+
+
+                }
+                else{
+                    cellIterator.next();
+                    double pId = cellIterator.next().getNumericCellValue();
+                    String pName = cellIterator.next().getStringCellValue();
+                    String pMajor = cellIterator.next().getStringCellValue();
+                    double teamNumber = cellIterator.next().getNumericCellValue();
+                    String teamName = cellIterator.next().getStringCellValue();
+
+                    Cell rankc =  cellIterator.next();
+                    String rank = rankc.getCellType() == CellType.STRING ? rankc.getStringCellValue() : rankc.getNumericCellValue()+" ";
+                    Student st = new Student(pName, pId, pMajor);
+                    if(teamNumber == laseTeamAdded){
+                        ((TeamPartecipant) (compList.get(compList.size()-1).partecipants.get(compList.get(compList.size()-1).partecipants.size()-1))).addMumber(st);
+                    }else{
+                        TeamPartecipant tp = new TeamPartecipant(teamName, rank);
+                        tp.addMumber(st);
+                        compList.get(compList.size()-1).addPartecipant(tp);
+                    }
+                    laseTeamAdded = teamNumber;
+
 
 
                 }
