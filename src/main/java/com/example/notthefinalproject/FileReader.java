@@ -5,10 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.collections.ObservableListBase;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -16,23 +19,16 @@ public class FileReader {
 
 
 
-    public ArrayList<Competition> competitions;
+    public static ArrayList<Competition> competitions;
 
 
-    FileReader(){
-        try {
-            this.competitions = getDataList();
-        }catch (IOException e){
-            System.out.println("The file dose not exist!");
-        }
-
-    }
 
 
-    public static ArrayList<Competition> getDataList() throws IOException {
+
+    public static void getDataList() throws IOException {
 
         ArrayList<Competition> compList = new ArrayList<>();
-        FileInputStream file = new FileInputStream(new File("/Users/nawafo/IdeaProjects/zg/src/Competitions Participations.xlsx"));
+        FileInputStream file = new FileInputStream(new File("src/main/java/com/example/notthefinalproject/Competitions Participations.xlsx"));
         Workbook workbook = new XSSFWorkbook(file);
         Iterator<Sheet> ii = workbook.iterator();
         int sheetNumber = 0;
@@ -48,8 +44,10 @@ public class FileReader {
             //iterating over excel file
             String compName = (itr.next()).getCell(1).getStringCellValue();
             String compUrl =  itr.next().getCell(1).getStringCellValue();
-            String compDate =  itr.next().getCell(1).getNumericCellValue()+" ";
-            compList.add(new Competition(compName, compDate, compUrl, !team));
+            Date compDate =  itr.next().getCell(1).getDateCellValue();
+            System.out.println(compDate.getYear()+1900);
+            LocalDate d = LocalDate.of(compDate.getYear()+1900, compDate.getMonth()+1 ,compDate.getDate());
+            compList.add(new Competition(compName, d, compUrl, !team));
             itr.next();
             double laseTeamAdded = 0;
             while (itr.hasNext())
@@ -97,7 +95,7 @@ public class FileReader {
                 }
             }
         }
-        return compList;
+        competitions = compList;
     }
 
 

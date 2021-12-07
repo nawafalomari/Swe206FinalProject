@@ -1,6 +1,8 @@
 package com.example.notthefinalproject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Competition {
 
@@ -8,10 +10,10 @@ public class Competition {
     ArrayList<Partecipant> partecipants = new ArrayList<>();
     String compName;
     String compUrl;
-    String compDate;
+    LocalDate compDate;
     boolean single;
 
-    Competition(String compName, String compDate, String compUrl, boolean single){
+    Competition(String compName, LocalDate compDate, String compUrl, boolean single){
         this.compDate = compDate;
         this.compName = compName;
         this.compUrl = compUrl;

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="612.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.notthefinalproject.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="612.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.notthefinalproject.MainController">
    <children>
       <Label layoutX="24.0" layoutY="31.0" text="Welcome again!">
          <font>
@@ -17,18 +18,54 @@
             <Font name="Baskerville" size="13.0" />
          </font>
       </Label>
-      <ListView fx:id="compList" layoutX="24.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" />
-      <Label fx:id="welcomeText" layoutX="25.0" layoutY="326.0" text="The competition is team based">
+      <ListView fx:id="compList" editable="true" layoutX="24.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label fx:id="welcomeText" layoutX="258.0" layoutY="35.0" text="The competition is team based">
          <font>
             <Font name="Baskerville" size="21.0" />
          </font>
       </Label>
       <Label layoutX="25.0" layoutY="368.0" />
-      <Label fx:id="parLabel" layoutX="26.0" layoutY="360.0" text="Select a partecipant:">
+      <Label fx:id="parLabel" layoutX="258.0" layoutY="79.0" text="Select a partecipant:">
          <font>
             <Font name="Baskerville" size="13.0" />
          </font>
       </Label>
-      <ListView fx:id="partList" layoutX="24.0" layoutY="385.0" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="partList" layoutX="258.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" />
+      <Button fx:id="addComp" layoutX="196.0" layoutY="79.0" mnemonicParsing="false" onAction="#addComp" prefHeight="8.0" prefWidth="23.0" text="+" textAlignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="editComp" layoutX="166.0" layoutY="79.0" mnemonicParsing="false" onAction="#editComp" prefHeight="20.0" prefWidth="27.0" text="Edit">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="editPar" layoutX="388.0" layoutY="79.0" mnemonicParsing="false" onAction="#editPar" prefHeight="20.0" prefWidth="27.0" text="Edit">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="addPar" layoutX="421.0" layoutY="79.0" mnemonicParsing="false" onAction="#addPar" prefHeight="8.0" prefWidth="23.0" text="+" textAlignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Label fx:id="mamberLabel" layoutX="518.0" layoutY="79.0" text="Select a partecipant:">
+         <font>
+            <Font name="Baskerville" size="13.0" />
+         </font>
+      </Label>
+      <ListView fx:id="memberList" layoutX="518.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" />
+      <Button fx:id="memberEdit" layoutX="648.0" layoutY="79.0" mnemonicParsing="false" onAction="#editMemeber" prefHeight="20.0" prefWidth="27.0" text="Edit">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="memberAdd" layoutX="681.0" layoutY="79.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="23.0" text="+" textAlignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

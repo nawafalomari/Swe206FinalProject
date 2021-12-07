@@ -1,13 +1,20 @@
 package com.example.notthefinalproject;
 
 
+import java.math.BigInteger;
+
 public class Student {
     String name, major;
-    double id;
+    Double id;
 
-    Student(String name , double id, String major){
+    Student(String name , Double id, String major){
         this.name = name;
         this.id = id;
         this.major = major;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
