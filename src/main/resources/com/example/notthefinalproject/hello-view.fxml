@@ -41,12 +41,12 @@
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="editPar" layoutX="388.0" layoutY="79.0" mnemonicParsing="false" onAction="#editPar" prefHeight="20.0" prefWidth="27.0" text="Edit">
+      <Button fx:id="editPar" layoutX="403.0" layoutY="79.0" mnemonicParsing="false" onAction="#editPar" prefHeight="20.0" prefWidth="27.0" text="Edit">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="addPar" layoutX="421.0" layoutY="79.0" mnemonicParsing="false" onAction="#addPar" prefHeight="8.0" prefWidth="23.0" text="+" textAlignment="CENTER">
+      <Button fx:id="addPar" layoutX="435.0" layoutY="79.0" mnemonicParsing="false" onAction="#addPar" prefHeight="8.0" prefWidth="23.0" text="+" textAlignment="CENTER">
          <font>
             <Font size="10.0" />
          </font>
@@ -57,15 +57,31 @@
          </font>
       </Label>
       <ListView fx:id="memberList" layoutX="518.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" />
-      <Button fx:id="memberEdit" layoutX="648.0" layoutY="79.0" mnemonicParsing="false" onAction="#editMemeber" prefHeight="20.0" prefWidth="27.0" text="Edit">
+      <Button fx:id="memberEdit" layoutX="651.0" layoutY="79.0" mnemonicParsing="false" onAction="#editMemeber" prefHeight="20.0" prefWidth="27.0" text="Edit">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="memberAdd" layoutX="681.0" layoutY="79.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="23.0" text="+" textAlignment="CENTER">
+      <Button fx:id="memberAdd" layoutX="681.0" layoutY="79.0" mnemonicParsing="false" onAction="#addMember" prefHeight="8.0" prefWidth="23.0" text="+" textAlignment="CENTER">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
+      <Button fx:id="deleteComp" layoutX="138.0" layoutY="79.0" mnemonicParsing="false" onAction="#deleteComp" prefHeight="8.0" prefWidth="23.0" text="-" textAlignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="deletePar" layoutX="378.0" layoutY="79.0" mnemonicParsing="false" onAction="#deletePar" prefHeight="8.0" prefWidth="23.0" text="-" textAlignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteMember" layoutX="625.0" layoutY="79.0" mnemonicParsing="false" onAction="#deleteMember" prefHeight="8.0" prefWidth="23.0" text="-" textAlignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="sendEmailPar" layoutX="319.0" layoutY="320.0" mnemonicParsing="false" onAction="#sendEmailPar" text="Send Email" />
    </children>
 </AnchorPane>

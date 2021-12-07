@@ -13,16 +13,27 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
+    final String mailTemplate = """
+Dear [Student name/Team name],
 
+Conguratulation on your achievement in [Competition name]. This achievement is deeply appreciated by the unversity and we will announce it in the approbrite medias.\n
+
+In case you have Photos you want to share with the news post, reply to this email with the photos.
+
+Regards and Congrats,
+KFUPM News Team
+            """;
 
     Competition selectedComp = null;
 
@@ -85,7 +96,26 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    protected void addPar(){
+    protected void addPar() throws IOException {
+        if(compList.getFocusModel().getFocusedItem().single){
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("add-par-single.fxml"));
+            AddParSingleController controller = new AddParSingleController(compList.getFocusModel().getFocusedItem());
+            fxmlLoader.setController(controller);
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            stage.setTitle("CompTracker");
+            stage.setScene(scene);
+            stage.show();
+        }else{
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("add-par-team.fxml"));
+            AddTeamController controller = new AddTeamController(compList.getFocusModel().getFocusedItem());
+            fxmlLoader.setController(controller);
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            stage.setTitle("CompTracker");
+            stage.setScene(scene);
+            stage.show();
+        }
 
     }
 
@@ -146,7 +176,111 @@ public class MainController implements Initializable {
     }
 
 
+    @FXML
+    Button deleteComp;
 
+    @FXML
+    protected void deleteComp(){
+        FileReader.competitions.remove(compList.getFocusModel().getFocusedItem());
+        compList.getItems().setAll(FileReader.competitions);
+    }
+
+    @FXML
+    Button deletePar;
+
+    @FXML
+    protected void deletePar() throws URISyntaxException, IOException {
+
+        compList.getFocusModel().getFocusedItem().partecipants.remove(partList.getFocusModel().getFocusedItem());
+        partList.getItems().setAll(compList.getFocusModel().getFocusedItem().partecipants);
+        memberList.setOpacity(0);
+        memberAdd.setOpacity(0);
+        memberEdit.setOpacity(0);
+        mamberLabel.setOpacity(0);
+
+
+    }
+
+    @FXML
+    Button deleteMember;
+
+    @FXML
+    Button sendEmailPar;
+
+    @FXML
+    protected  void sendEmailPar() throws IOException, URISyntaxException {
+        Desktop desktop;
+        if (Desktop.isDesktopSupported()
+                && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+            if(compList.getFocusModel().getFocusedItem().single){
+
+                String body = mailTemplate.replace("[Student name/Team name]", ((SinglePartecipant) partList.getFocusModel().getFocusedItem()).partecipant.name);
+                body = body.replace("[Competition name]", compList.getFocusModel().getFocusedItem().compName);
+                body = body.replaceAll("\n", "%0A");
+                body = body.replaceAll(" ", "%20");
+                String stId = ((SinglePartecipant)partList.getFocusModel().getFocusedItem()).partecipant.id.toString();
+                stId = stId.substring(0, stId.length()-3);
+                while (stId.length()<9){
+                    stId+="0";
+                }
+                stId =stId.replace(".", "");
+                String email = stId;
+
+                email = email+"@kfupm.edu.sa";
+                String subject = compList.getFocusModel().getFocusedItem().compName;
+                URI mailto = new URI("mailto:"+email+ "?subject=Info&body="+body);
+                desktop.mail(mailto);
+            } else{
+                String body = mailTemplate.replace("[Student name/Team name]", ((TeamPartecipant) partList.getFocusModel().getFocusedItem()).teamName);
+                body = body.replace("[Competition name]", compList.getFocusModel().getFocusedItem().compName);
+                body = body.replaceAll("\n", "%0A");
+                body = body.replaceAll(" ", "%20");
+                String email = "";
+                for(Student st :(((TeamPartecipant)partList.getFocusModel().getFocusedItem()).teamMumbers)){
+                    String stId = st.id.toString();
+                    stId = stId.substring(0, stId.length()-3);
+                    while (stId.length()<9){
+                        stId+="0";
+                    }
+                    stId =stId.replace(".", "");
+
+
+                    email += stId+ "@kfupm.edu.sa,";
+                }
+                System.out.println(email);
+                email.substring(0, email.length()-2);
+                URI mailto = new URI("mailto:"+email+ "?subject=Info&body="+body);
+                desktop.mail(mailto);
+            }
+            }else {
+            // TODO fallback to some Runtime.exec(..) voodoo?
+            throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+        }
+
+    }
+
+
+    @FXML
+    protected void deleteMember(){
+
+      (  (TeamPartecipant) partList.getFocusModel().getFocusedItem()).teamMumbers.remove(memberList.getFocusModel().getFocusedItem());
+        memberList.getItems().setAll(((TeamPartecipant) partList.getFocusModel().getFocusedItem()).teamMumbers);
+
+    }
+
+
+    @FXML
+    protected void addMember() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("add-member.fxml"));
+
+        AddMember controller = new AddMember((TeamPartecipant) partList.getFocusModel().getFocusedItem());
+        fxmlLoader.setController(controller);
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        stage.setTitle("CompTracker");
+        stage.setScene(scene);
+        stage.show();
+    }
 
 
 
@@ -160,23 +294,32 @@ public class MainController implements Initializable {
         memberList.setOpacity(0);
         memberEdit.setOpacity(0);
         mamberLabel.setOpacity(0);
+        deletePar.setOpacity(0);
+        sendEmailPar.setOpacity(0);
 
         addPar.setOpacity(0);
         editPar.setOpacity(0);
         welcomeText.setOpacity(0);
         parLabel.setOpacity(0);
+        deleteMember.setOpacity(0);
         partList.setOpacity(0);
         partList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Partecipant>() {
             @Override
             public void changed(ObservableValue<? extends Partecipant> observable, Partecipant oldValue, Partecipant newValue) {
-                if(!(compList.getFocusModel().getFocusedItem().single)){
-                    System.out.println(compList.getFocusModel().getFocusedItem().compName);
-                    memberList.getItems().setAll(((TeamPartecipant) newValue).teamMumbers);
-                    memberList.setOpacity(1);
-                    memberEdit.setOpacity(1);
-                    memberAdd.setOpacity(1);
-                    mamberLabel.setOpacity(1);
+
+                if (newValue != null) {
+
+                    if(!(compList.getFocusModel().getFocusedItem().single)){
+                        System.out.println(compList.getFocusModel().getFocusedItem().compName);
+                        memberList.getItems().setAll(((TeamPartecipant) newValue).teamMumbers);
+                        memberList.setOpacity(1);
+                        memberEdit.setOpacity(1);
+                        memberAdd.setOpacity(1);
+                        deleteMember.setOpacity(1);
+                        mamberLabel.setOpacity(1);
+                    }
                 }
+
 
             }
         });
@@ -184,23 +327,29 @@ public class MainController implements Initializable {
         compList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Competition>() {
             @Override
             public void changed(ObservableValue<? extends Competition> observable, Competition oldValue, Competition newValue) {
-                selectedComp = newValue;
-                for(Partecipant p : newValue.partecipants){
 
-                    System.out.println(p);
+                if(newValue != null){
+                    selectedComp = newValue;
+                    for(Partecipant p : newValue.partecipants){
+
+                        System.out.println(p);
+                    }
+                    deletePar.setOpacity(1);
+                    memberList.setOpacity(0);
+                    sendEmailPar.setOpacity(1);
+                    memberAdd.setOpacity(0);
+                    memberEdit.setOpacity(0);
+                    mamberLabel.setOpacity(0);
+                    deleteMember.setOpacity(0);
+                    welcomeText.setText(newValue.single ? "The competition is single participate.": "The competition is team based.");
+                    welcomeText.setOpacity(1);
+                    parLabel.setOpacity(1);
+                    partList.setOpacity(1);
+                    addPar.setOpacity(1);
+                    editPar.setOpacity(1);
+                    partList.getItems().setAll(newValue.partecipants);
+
                 }
-
-                memberList.setOpacity(0);
-                memberAdd.setOpacity(0);
-                memberEdit.setOpacity(0);
-                mamberLabel.setOpacity(0);
-                welcomeText.setText(newValue.single ? "The competition is single participate.": "The competition is team based.");
-                welcomeText.setOpacity(1);
-                parLabel.setOpacity(1);
-                partList.setOpacity(1);
-                addPar.setOpacity(1);
-                editPar.setOpacity(1);
-                partList.getItems().setAll(newValue.partecipants);
 
             }
         });
